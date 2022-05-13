@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "671603227468",
+    "project_id": "teacher-attendance-9d519",
+    "storage_bucket": "teacher-attendance-9d519.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:671603227468:android:0273f1150de7ff5a856de9",
+        "android_client_info": {
+          "package_name": "com.example.teacher_attendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "671603227468-2s82k3hcaksd488mkg4bb4dcs3osafru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.teacher_attendance",
+            "certificate_hash": "59c83c7a985e95ee8b7890cb3ef4ca2bc998bb09"
+          }
+        },
+        {
+          "client_id": "671603227468-9lmrs72ru26l74ndaloqosqpu480rdek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnAXNtwjF1S8lyr36E_VLRsUwTJ7d4XlA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "671603227468-9lmrs72ru26l74ndaloqosqpu480rdek.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "671603227468-r936cvennb0fmhmed7c1c7tc1ljcva0q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.MMSW.TA"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
