@@ -264,9 +264,11 @@ packages:
   json_theme:
     dependency: "direct main"
     description:
-      path: "plugins/json_theme"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "07926c589afc5993caae44fa6ff87cb2fe2933cd"
+      url: "https://github.com/nipunattri1/my_json_theme_flutter.git"
+    source: git
     version: "3.3.1"
   lints:
     dependency: transitive
