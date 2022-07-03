@@ -21,6 +21,13 @@ To deploy this project run
 - get leaves on particlar date or range of dates
 - Cross platform
 
+## Tech Stack
+
+**Client:** Flutter, Dart
+**Utils**: lottie
+**Server:** Firebase, FirebaseAuth, Firestore
+
+
 
 ## Acknowledgements
 
@@ -33,10 +40,4 @@ To deploy this project run
 
 - [@nipunattri1](https://www.github.com/nipunattri1)
 
-
-## Tech Stack
-
-**Client:** Flutter, Dart
-**Utils**: lottie
-**Server:** Firebase, FirebaseAuth, Firestore
 
