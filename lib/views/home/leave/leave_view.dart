@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:teacher_attendance/views/leave_info/leave_slector.dart';
+import 'package:teacher_attendance/views/home/leave/leave_info/leave_slector.dart';
 
 class LeaveApplyView extends StatelessWidget {
   const LeaveApplyView({Key? key}) : super(key: key);
@@ -15,7 +15,6 @@ class LeaveApplyView extends StatelessWidget {
           child: Center(
             child: SizedBox(
               height: MediaQuery.of(context).size.height * .3,
-              // width: MediaQuery.of(context).size.width * .3,
               child: SvgPicture.asset(
                 "assets/svg/teacher.svg",
               ),

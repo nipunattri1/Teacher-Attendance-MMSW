@@ -1,9 +1,9 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teacher_attendance/views/auth/initializing.dart';
 
 class AuthView extends StatelessWidget {
   const AuthView({Key? key}) : super(key: key);
@@ -13,21 +13,13 @@ class AuthView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // Image.asset(
-          //   'assets/logo/logo.png',
-          //   height: MediaQuery.of(context).size.height * .4,
-          //   fit: BoxFit.cover,
-          // ),
           SizedBox(
             height: MediaQuery.of(context).size.height * .3,
             width: MediaQuery.of(context).size.width,
             child: const Center(
               child: CircleAvatar(
                 radius: 64,
-                child: Text(
-                  'School Logo Here',
-                  textAlign: TextAlign.center,
-                ),
+                backgroundImage: AssetImage("assets/logo/logo.png"),
               ),
             ),
           ),
@@ -48,13 +40,14 @@ class AuthView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 600),
+              constraints: const BoxConstraints(maxWidth: 600),
               child: SizedBox(
                 height: 46,
                 child: ElevatedButton(
                   onPressed: () async {
                     // sing in with google
                     log("Signing in with Google");
+
                     final FirebaseAuth _auth = FirebaseAuth.instance;
                     final GoogleSignIn _googleSignIn = GoogleSignIn();
                     try {
@@ -68,10 +61,29 @@ class AuthView extends StatelessWidget {
                         accessToken: googleSignInAuthentication.accessToken,
                         idToken: googleSignInAuthentication.idToken,
                       );
-                      await _auth.signInWithCredential(credential);
+                      await _auth.signInWithCredential(credential).then(
+                            (value) => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const Initializing(),
+                              ),
+                            ),
+                          );
                     } on FirebaseAuthException catch (e) {
-                      print(e.message);
-                      throw e;
+                      log(e.message.toString());
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Error"),
+                          content: Text(e.message.toString()),
+                          actions: [
+                            ElevatedButton(
+                              child: const Text("Ok"),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                          ],
+                        ),
+                      );
                     }
                   },
                   child: Row(

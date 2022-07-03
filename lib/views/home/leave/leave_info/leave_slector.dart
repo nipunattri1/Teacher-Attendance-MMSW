@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:teacher_attendance/controllers/apply_leave/appy_leave.dart';
+import 'package:teacher_attendance/model/leave/leave_model.dart';
+
+enum DayType { start, end }
 
 class LeaveSelector extends StatefulWidget {
   const LeaveSelector({Key? key}) : super(key: key);
@@ -9,20 +13,49 @@ class LeaveSelector extends StatefulWidget {
 }
 
 class _LeaveSelectorState extends State<LeaveSelector> {
-  // all data to be gathered from the user
   String _leaveType = "One Day Leave";
   String _reason = "";
   DateTimeRange? _dateRange;
   DateTime? _leaveDate;
+  bool _isMorning = true;
+
+  DateTime calcDate(DayType type) {
+    if (type == DayType.start) {
+      if (_leaveType != "Multiple Days Leave") {
+        return _leaveDate!;
+      } else {
+        return _dateRange!.start;
+      }
+    } else {
+      if (_leaveType != "Multiple Days Leave") {
+        return _leaveDate!;
+      } else {
+        return _dateRange!.end;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: (_reason != "" &&
               ((_dateRange != null && _leaveType == "Multiple Days Leave") ||
                   (_leaveType != "Multiple Days Leave" && _leaveDate != null)))
           ? FloatingActionButton(
-              onPressed: () {},
+              onPressed: () async {
+                await applyLeave(
+                  LeaveDataModel(
+                    description: _reason,
+                    startDate: calcDate(DayType.start),
+                    endDate: calcDate(DayType.end),
+                    halfDayType: (_isMorning) ? "Morning" : null,
+                    isHalfDay: _leaveType == "Half Day Leave",
+                    isMultipleDays: _leaveType == "Multiple Days Leave",
+                  ),
+                  context,
+                );
+              },
               child: const Icon(Icons.check),
             )
           : null,
@@ -38,6 +71,7 @@ class _LeaveSelectorState extends State<LeaveSelector> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -61,27 +95,33 @@ class _LeaveSelectorState extends State<LeaveSelector> {
                           value: "One Day Leave",
                           child: const Text("One Day Leave"),
                           onTap: () {
-                            setState(() {
-                              _leaveType = "One Day Leave";
-                            });
+                            setState(
+                              () {
+                                _leaveType = "One Day Leave";
+                              },
+                            );
                           },
                         ),
                         DropdownMenuItem(
                           value: "Half Day Leave",
                           child: const Text("Half Day Leave"),
                           onTap: () {
-                            setState(() {
-                              _leaveType = "Half Day Leave";
-                            });
+                            setState(
+                              () {
+                                _leaveType = "Half Day Leave";
+                              },
+                            );
                           },
                         ),
                         DropdownMenuItem(
                           value: "Multiple Days Leave",
                           child: const Text("Multiple Days Leave"),
                           onTap: () {
-                            setState(() {
-                              _leaveType = "Multiple Days Leave";
-                            });
+                            setState(
+                              () {
+                                _leaveType = "Multiple Days Leave";
+                              },
+                            );
                           },
                         ),
                       ],
@@ -125,11 +165,15 @@ class _LeaveSelectorState extends State<LeaveSelector> {
                                 days: 30,
                               ),
                             ),
-                          ).then((value) {
-                            setState(() {
-                              _leaveDate = value;
-                            });
-                          });
+                          ).then(
+                            (value) {
+                              setState(
+                                () {
+                                  _leaveDate = value;
+                                },
+                              );
+                            },
+                          );
                         }
                       },
                       child: Text(
@@ -139,6 +183,60 @@ class _LeaveSelectorState extends State<LeaveSelector> {
                       ),
                     ),
                   ),
+                  if (_leaveType == "Half Day Leave")
+                    Container(
+                      height: 75,
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => setState(() {
+                                _isMorning = true;
+                              }),
+                              child: AnimatedContainer(
+                                margin: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: _isMorning
+                                      ? Theme.of(context).cardColor
+                                      : null,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                duration: const Duration(milliseconds: 300),
+                                child: const Center(
+                                  child: Text(
+                                    "Morning",
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => setState(() {
+                                _isMorning = false;
+                              }),
+                              child: AnimatedContainer(
+                                margin: const EdgeInsets.all(4),
+                                duration: const Duration(milliseconds: 300),
+                                decoration: BoxDecoration(
+                                  color: !_isMorning
+                                      ? Theme.of(context).cardColor
+                                      : null,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "Afternoon",
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Form(
@@ -152,9 +250,11 @@ class _LeaveSelectorState extends State<LeaveSelector> {
                         },
                         maxLength: 200,
                         maxLines: 8,
-                        onChanged: (val) => setState(() {
-                          _reason = val;
-                        }),
+                        onChanged: (val) => setState(
+                          () {
+                            _reason = val;
+                          },
+                        ),
                         decoration: const InputDecoration(
                           labelText: "Leave Reason",
                           filled: true,
@@ -165,7 +265,7 @@ class _LeaveSelectorState extends State<LeaveSelector> {
                 ],
               ),
             ),
-            Spacer(),
+            const Spacer(),
           ],
         ),
       ),

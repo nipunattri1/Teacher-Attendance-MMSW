@@ -1,19 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:teacher_attendance/views/requests/requests.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final User = FirebaseAuth.instance.currentUser;
+    /// current user
+    final User? _user = FirebaseAuth.instance.currentUser;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         CircleAvatarWithTransition(
           image: NetworkImage(
-            User?.photoURL ?? "https://picsum.photos/200/300",
+            _user?.photoURL ?? "https://picsum.photos/200/300",
           ),
           size: 140,
           primaryColor: Theme.of(context).colorScheme.primary,
@@ -21,28 +23,45 @@ class SettingsView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            User?.displayName ?? "",
+            _user?.displayName ?? "",
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         Text(
-          User?.email ?? "",
+          _user?.email ?? "",
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(
           height: 35,
         ),
         M3ListTile(
-          onPressed: (() async {
-            await FirebaseAuth.instance.signOut();
-          }),
-          title: Text("Logout"),
-          leading: Icon(Icons.logout_rounded),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RequestList(),
+              ),
+            );
+          },
+          title: const Text("My Leave Requests"),
+          leading: const Icon(Icons.info_outline_rounded),
         ),
         M3ListTile(
-          onPressed: (() {}),
-          title: Text("More Info"),
-          leading: Icon(Icons.info_outline_rounded),
+          onPressed: () {
+            showAboutDialog(context: context, children: [
+              const Text("Version 1.0.0"),
+              const Text("Developed by Nipun Attri"),
+            ]);
+          },
+          title: const Text("More Info"),
+          leading: const Icon(Icons.info_outline_rounded),
+        ),
+        M3ListTile(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+          },
+          title: const Text("Logout"),
+          leading: const Icon(Icons.logout_rounded),
         ),
         const SizedBox(
           width: double.infinity,

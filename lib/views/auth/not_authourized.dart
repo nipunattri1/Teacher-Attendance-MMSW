@@ -16,9 +16,9 @@ class NotAuth extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * .6,
             width: double.infinity,
-            child: const Padding(
-              padding: EdgeInsets.all(18.0),
-              child: Placeholder(),
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Image.asset("assets/Saly-32.png"),
             ),
           ),
           Text(
