@@ -1,7 +1,7 @@
 
 # MMSW Teacher Leave
 
-This project's sole moto is to make process of leaves easy for teachers.
+This project's sole motto is to make process of leaves easy for teachers.
 ## Deployment
 
 To deploy this project run
